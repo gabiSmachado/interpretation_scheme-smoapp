@@ -1,6 +1,6 @@
 # interpretation_scheme-smoapp
 
-This smoApp implements a FastMCP-based service that exposes tools to manage Network Slice Booking sessions, which acts as a translator.
+This smoApp implements a FastMCP-based server that exposes tools to manage Network Slice Booking sessions, which acts as a translator.
 It provides arguments for the LLM to translate natural-language intent into a structured result.
 ORION adopts the CAMARA NetworkSliceBooking resource model (e.g., slice profile, QoS requirements, area of service, duration) as a
 canonical skeleton for slice intents, enabling vendor-agnostic translation and simplifying validation and auditing.
@@ -16,16 +16,20 @@ canonical skeleton for slice intents, enabling vendor-agnostic translation and s
 
 ```text
 .
+├── build_and_push_image.sh
+├── CONTRIBUTING.md
 ├── Dockerfile
+├── LICENSE
+├── README.md
 ├── requirements.txt
-├── config/
-│   └── config.yaml
 ├── helm/
 │   ├── Chart.yaml
 │   ├── values.yaml
 │   └── templates/
 ├── src/
 │   ├── server.py
+│   ├── config/
+│   │   └── config.yaml
 │   └── utils/
 │       ├── logger.py
 │       └── models.py
@@ -35,30 +39,23 @@ canonical skeleton for slice intents, enabling vendor-agnostic translation and s
 
 - Python 3.11+
 - Docker
-- Kubernetes cluster access
-- Helm 3+
+- Kubernetes + Helm 3+
 - Access to a running [NetworkSliceBooking](https://github.com/camaraproject/NetworkSliceBooking.git) API endpoint
 
-## Docker
+## Build
 
-Build from the parent repository root (the directory that contains the `mcp_server/` folder), as expected by the Dockerfile `COPY` paths:
+To build and push the docker image change the REGISTRY to your address in `build_and_push_image.sh` and run:
 
 ```bash
-docker build -f mcp_server/Dockerfile -t mcp-server:local .
+bash build_and_push_image.sh
 ```
 
-Run:
+## Deploy
+
+To deploy the smoApp use:
 
 ```bash
-docker run --rm -p 8000:8000 mcp-server:local
-```
-
-## Helm Deployment
-
-Install with default values:
-
-```bash
-helm upgrade --install mcp-server ./helm
+helm upgrade --install mcp-server ./helm -n smo
 ```
 
 Customize through `helm/values.yaml` (image, service type/port, config map values, probes, and resources).
@@ -69,4 +66,4 @@ Customize through `helm/values.yaml` (image, service type/port, config map value
 
 ## License
 
-This project is licensed under the Apache License 2.0. See [LICENSE](LICENSE).
+Licensed under Apache 2.0. See [LICENSE](LICENSE).
