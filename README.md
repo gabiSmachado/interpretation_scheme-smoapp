@@ -5,22 +5,26 @@ It provides arguments for the LLM to translate natural-language intent into a st
 ORION adopts the CAMARA NetworkSliceBooking resource model (e.g., slice profile, QoS requirements, area of service, duration) as a
 canonical skeleton for slice intents, enabling vendor-agnostic translation and simplifying validation and auditing.
 
-## Features
+## Overview
 
 - Exposes MCP tools over `sse` transport
 - Creates, retrieves, and deletes slice booking sessions
 - Parses wrapped JSON payloads returned by upstream API responses
 - Supports local execution, Docker image and Helm deployment
 
+## Requirements
+
+- Python 3.11+
+- Docker
+- Kubernetes + Helm 3+
+- Access to a running [NetworkSliceBooking](https://github.com/camaraproject/NetworkSliceBooking.git) API endpoint
+
 ## Repository Structure
 
 ```text
 .
 ├── build_and_push_image.sh
-├── CONTRIBUTING.md
 ├── Dockerfile
-├── LICENSE
-├── README.md
 ├── requirements.txt
 ├── helm/
 │   ├── Chart.yaml
@@ -34,13 +38,6 @@ canonical skeleton for slice intents, enabling vendor-agnostic translation and s
 │       ├── logger.py
 │       └── models.py
 ```
-
-## Requirements
-
-- Python 3.11+
-- Docker
-- Kubernetes + Helm 3+
-- Access to a running [NetworkSliceBooking](https://github.com/camaraproject/NetworkSliceBooking.git) API endpoint
 
 ## Build
 
@@ -60,9 +57,9 @@ helm upgrade --install mcp-server ./helm -n smo
 
 Customize through `helm/values.yaml` (image, service type/port, config map values, probes, and resources).
 
-## Contributing and Security
+## Contributing
 
-- Contribution guidelines: [CONTRIBUTING.md](CONTRIBUTING.md)
+Contribution guidelines: [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## License
 
